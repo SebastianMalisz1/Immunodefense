@@ -10,11 +10,13 @@ private:
 	sf::RenderWindow* window;
 
 	//Map
-	Map* map;
+	Mapa* map;
+	
 
 	//Enemies
 	float spawnTimer;
 	float spawnTimerMax;
+	std::vector<Enemy*> enemies;
 	std::vector<Bacteria*> bacteria;
 
 	void initWindow();
@@ -28,6 +30,7 @@ public:
 	void run();
 	void updatePollEvents();
 	void updateBacteria();
+	void updateVaccine();
 	void update();
 	void render();
 };

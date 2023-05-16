@@ -6,28 +6,54 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
+
 class Enemy
 {
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
-	float speed;
+    
+    float speed;
 	int hp;
 	int hpMax;
 	int damage;
 	int gold;
-
 
 	virtual void initVariables();
 	virtual void initTexture();
 	virtual void initSprite();
 
 public:
+    const int initTab[19][10] = {
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 2, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 0, 0, 0, 0, 1, 1},
+      {1, 1, 1, 1, 0, 2, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 1, 1, 2, 1, 1},
+      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+      {1, 1, 1, 2, 1, 1, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 2, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 0, 1, 1},
+      {1, 1, 1, 1, 2, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 2, 1},
+      {1, 1, 1, 1, 2, 1, 1, 0, 0, 1},
+      {1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
+    };
+
 	Enemy();
-	Enemy(float pos_x, float pos_y);
 	virtual ~Enemy();
 
-	virtual void update();
+	virtual const sf::FloatRect getBounds() const;
+
 	virtual void render(sf::RenderTarget* target);
+
+   
+  
 };

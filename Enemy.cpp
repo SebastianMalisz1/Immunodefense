@@ -30,24 +30,19 @@ Enemy::Enemy()
 	this->initSprite();
 }
 
-Enemy::Enemy(float pos_x, float pos_y)
-{
-	this->initVariables();
-	this->initTexture();
-	this->initSprite();
-	this->sprite.setPosition(pos_x, pos_y);
-}
 
 Enemy::~Enemy()
 {
 }
 
-void Enemy::update()
+const sf::FloatRect Enemy::getBounds() const
 {
-	this->sprite.move(0.f, this->speed);
+	return this->sprite.getGlobalBounds();
 }
+
 
 void Enemy::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);
 }
+

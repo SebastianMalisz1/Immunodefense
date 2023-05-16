@@ -7,20 +7,36 @@
 #include "Enemy.h"
 #include "Bacteria.h"
 
-class Map
+
+
+class Mapa
 {
-private:
-	sf::VertexArray tileMap;
+public:
+
+	const int gridSize = 100;
+	const int height = sf::VideoMode::getDesktopMode().height / gridSize;
+	const int width = sf::VideoMode::getDesktopMode().width / gridSize;
+
+	//sf::VertexArray tileMap;
+	//sf::RectangleShape grid;
+	std::vector<sf::RectangleShape> grids;
+	std::vector<sf::RectangleShape> path;
+	std::vector<sf::RectangleShape> placeForTower;
+
 
 	void initTileMap();
 
-public:
-	Map(sf::RenderWindow& window);
-	~Map();
+	
+	
 
-	void placeBacteria(Bacteria& bacteria, int x, int y);
+
+	Mapa(sf::RenderWindow& window);
+	Mapa();
+	~Mapa();
 
 	void update();
 	void render(sf::RenderTarget& target);
+	bool getCollision(sf::Sprite sprite);
+	std::vector<int> getPositionOnTileMap(sf::Sprite sprite);
 };
 
