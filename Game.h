@@ -3,6 +3,10 @@
 #include "Map.h"
 #include "Enemy.h"
 #include "Bacteria.h"
+#include "Tower.h"
+#include "Vaccine.h"
+
+class Tower;
 
 class Game
 {
@@ -11,8 +15,19 @@ private:
 
 	//Map
 	Mapa* map;
-	
 
+	//Turret
+	sf::Sprite toggleTurret;
+	sf::Texture toggleTurretTexture;
+
+	std::vector<sf::RectangleShape> avaliableSpotsForTowers;
+
+	std::vector<Tower*> towersOnScreen;
+	//std::vector<Vaccine*> vaccines;
+
+	void initTexture();
+	void initSprite();
+	
 	//Enemies
 	float spawnTimer;
 	float spawnTimerMax;
@@ -28,10 +43,8 @@ public:
 	virtual ~Game();
 
 	void run();
-	void updatePollEvents();
 	void updateBacteria();
 	void updateVaccine();
-	void update();
 	void render();
 };
 

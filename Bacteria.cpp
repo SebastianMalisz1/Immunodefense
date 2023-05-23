@@ -18,15 +18,15 @@ void Bacteria::initTexture()
 	int liczbaLosowa = rand() % 3;
 	std::cout << liczbaLosowa << std::endl;
 	
-	if (!this->texture.loadFromFile("Textures/czerwonaBak.png")&& liczbaLosowa == 0)
+	if (liczbaLosowa == 0 && !this->texture.loadFromFile("Textures/czerwonaBak.png"))
 	{
 		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
-	if (!this->texture.loadFromFile("Textures/zoltaBak.png") && liczbaLosowa == 1)
+	if (liczbaLosowa == 1 && !this->texture.loadFromFile("Textures/zoltaBak.png"))
 	{
 		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
-	if (!this->texture.loadFromFile("Textures/zielonyWir.png") && liczbaLosowa == 2)
+	if (liczbaLosowa == 2 && !this->texture.loadFromFile("Textures/zielonyWir.png"))
 	{
 		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}

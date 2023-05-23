@@ -6,8 +6,29 @@
 #include <SFML/System.hpp>
 #include "Enemy.h"
 #include "Bacteria.h"
+#include <iostream>
 
-
+const int initTab[19][10] = {
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 2, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 0, 0, 0, 0, 1, 1},
+      {1, 1, 1, 1, 0, 2, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+      {1, 1, 1, 2, 0, 2, 1, 1, 1, 1},
+      {1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 2, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 2, 1, 1},
+      {1, 2, 2, 1, 1, 1, 0, 0, 1, 1},
+      {1, 2, 2, 1, 1, 1, 2, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
+      {1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
+};
 
 class Mapa
 {
@@ -26,7 +47,15 @@ public:
 
 	void initTileMap();
 
-	
+	//Turret
+	sf::Sprite toggleTurret;
+	sf::Texture toggleTurretTexture;
+
+	//std::vector<Tower*> towers;
+	//std::vector<Vaccine*> vaccines;
+
+	void initTexture();
+	void initSprite();
 	
 
 

@@ -1,5 +1,19 @@
 #include "Map.h"
 
+void Mapa::initTexture()
+{
+    if (!this->toggleTurretTexture.loadFromFile("Textures/bacteria.png"))
+    {
+        std::cout << "ERROR::GAME::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
+    }
+}
+
+void Mapa::initSprite()
+{
+    this->toggleTurret.setTexture(this->toggleTurretTexture);
+    this->toggleTurret.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+    this->toggleTurret.setScale(3.f, 3.f);
+}
 
 void Mapa::initTileMap()
 {
@@ -7,27 +21,7 @@ void Mapa::initTileMap()
     const int gridSize = 100;
     const int height = sf::VideoMode::getDesktopMode().height / gridSize;
     const int width = sf::VideoMode::getDesktopMode().width / gridSize;
-    const int initTab[19][10] = {
-      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
-      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
-      {1, 1, 1, 1, 2, 1, 1, 0, 1, 1},
-      {1, 1, 1, 1, 0, 0, 0, 0, 1, 1},
-      {1, 1, 1, 1, 0, 2, 1, 1, 1, 1},
-      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-      {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-      {1, 1, 1, 2, 0, 2, 1, 1, 1, 1},
-      {1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
-      {1, 1, 1, 1, 1, 2, 0, 1, 1, 1},
-      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-      {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-      {1, 1, 1, 1, 1, 1, 0, 2, 1, 1},
-      {1, 2, 2, 1, 1, 1, 0, 0, 1, 1},
-      {1, 2, 2, 1, 1, 1, 2, 0, 1, 1},
-      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
-      {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
-      {1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
-      {1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
-    };
+
 
     for (int i = 0; i < width; i++)
     {
@@ -114,7 +108,6 @@ std::vector<int> Mapa::getPositionOnTileMap(sf::Sprite sprite)
             returner[1]++;
         }
     }
-
     return returner;
 }
 
@@ -134,7 +127,16 @@ Mapa::~Mapa()
 
 void Mapa::update()
 {
-
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            if (initTab[i][j] == 2) {
+                this->toggleTurret.setPosition(250.f, 250.f);
+                
+            }
+        }
+    }
 }
 
 void Mapa::render(sf::RenderTarget& target)
