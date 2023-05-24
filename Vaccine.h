@@ -7,7 +7,6 @@
 #include <SFML/System.hpp>
 #include "Tower.h"
 
-class  Tower;
 class Vaccine: public Tower
 {
 private:
@@ -24,7 +23,6 @@ public:
 
 
 
-	void initVariables();
 
 	Vaccine();
 	Vaccine(sf::Vector2f positionOnMap);

@@ -1,4 +1,4 @@
-#include "Game.h"
+ï»¿#include "Game.h"
 
 void Game::initWindow()
 {
@@ -43,7 +43,15 @@ Game::~Game()
 	{
 		delete i;
 	}
-	for (auto* towers : this->towersOnScreen)
+	for (auto* towers : this->vaccine)
+	{
+		towers->render(this->window);
+	}
+	for (auto* towers : this->pellet)
+	{
+		towers->render(this->window);
+	}
+	for (auto* towers : this->syringe)
 	{
 		towers->render(this->window);
 	}
@@ -52,15 +60,15 @@ Game::~Game()
 
 void Game::run()
 {
-	//po klikniciu myszka utwórz w miejscu klikneicia sprite w którym bêdzie opcja wyboru wierzy (grafika gdzie sa namalowanie wierze i odpowiadajace im przyciski)
+	//po klikniciu myszka utwï¿½rz w miejscu klikneicia sprite w ktï¿½rym bï¿½dzie opcja wyboru wierzy (grafika gdzie sa namalowanie wierze i odpowiadajace im przyciski)
 	bool openToggleTurret = false;
 	for (int i = 0; i < this->map->placeForTower.size(); i++)
 		this->avaliableSpotsForTowers.push_back(this->map->placeForTower[i]);
 	sf::Vector2f bounds;
 	sf::Event ev;
-	
+
 	sf::RectangleShape toggleMenu(sf::Vector2f(600, 200));
-	
+
 	toggleMenu.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f);
 	toggleMenu.setFillColor(sf::Color::White);
 	toggleMenu.setOrigin(toggleMenu.getLocalBounds().width / 2.0f, toggleMenu.getLocalBounds().height / 2.0f);
@@ -74,8 +82,8 @@ void Game::run()
 
 	while (this->window->isOpen())
 	{
-		
-	
+
+
 
 		while (this->window->pollEvent(ev))
 		{
@@ -106,28 +114,28 @@ void Game::run()
 
 			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num1) {
 				std::cout << "kliknieto wieze\n";
-				this->towersOnScreen.push_back(new Tower(bounds));
+				this->vaccine.push_back(new Vaccine(bounds));
 				openToggleTurret = false;
 			}
 			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num2) {
 				std::cout << "kliknieto wieze\n";
-				this->towersOnScreen.push_back(new Vaccine(bounds));
+				this->pellet.push_back(new Pellet(bounds));
 				openToggleTurret = false;
 			}
 			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num3) {
 				std::cout << "kliknieto wieze\n";
-				this->towersOnScreen.push_back(new Vaccine(bounds));
+				this->syringe.push_back(new Syringe(bounds));
 				openToggleTurret = false;
 			}
-		
+
 		}
-		
-		
 
 
 
 
-		
+
+
+
 
 
 		this->updateEnemies();
@@ -136,18 +144,18 @@ void Game::run()
 		//update entities
 		//
 
-		
-		
-		
-	
+
+
+
+
 
 		this->window->clear();
-		
+
 		this->map->render(*this->window);
 
 		//this->window->draw(toggleMenu);
 
-		
+
 
 		//Draw all the stuff
 		for (auto* bacteria : this->bacteria)
@@ -159,13 +167,23 @@ void Game::run()
 		{
 			infection->render(this->window);
 		}
-		
+
 		for (auto* virus : this->virus)
 		{
 			virus->render(this->window);
 		}
 
-		for (auto* towers : this->towersOnScreen)
+		for (auto* towers : this->vaccine)
+		{
+			towers->render(this->window);
+		}
+		
+		for (auto* towers : this->pellet)
+		{
+			towers->render(this->window);
+		}
+		
+		for (auto* towers : this->syringe)
 		{
 			towers->render(this->window);
 		}
@@ -186,12 +204,12 @@ void Game::updateEnemies()
 	this->spawnTimer += 0.1f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-	/*	startPathX = map->path[0].getPosition().x;
-		startPathY = map->path[0].getPosition().y;*/
+		/*	startPathX = map->path[0].getPosition().x;
+			startPathY = map->path[0].getPosition().y;*/
 
 		this->bacteria.push_back(new Bacteria(-10.f, 750.f));
 		this->infection.push_back(new Infection(-10.f, 750.f));
-		this->virus.push_back(new Virus(-10.f,750.f));
+		this->virus.push_back(new Virus(-10.f, 750.f));
 		this->spawnTimer = 0.f;
 	}
 

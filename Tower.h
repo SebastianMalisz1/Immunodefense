@@ -21,7 +21,9 @@ public:
 
 	sf::Vector2f position;
 
-	void initVariables();
+
+
+	
 
 	Tower();
 	Tower(sf::Vector2f positionOnMap);

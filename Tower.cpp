@@ -2,13 +2,7 @@
 
 #include <iostream>
 
-void Tower::initVariables()
-{
-	int cost = 0;
-	float attackSpeed = 0;
-	int damage = 0;
-	float attackRange = 0;
-}
+
 
 Tower::Tower(){
 	if (!this->texture.loadFromFile("Textures/tower.png"))
@@ -34,6 +28,7 @@ Tower::Tower(sf::Vector2f positionOnMap){
 Tower::~Tower() {
 
 }
+
 void Tower::render(sf::RenderTarget* target){
 	target->draw(this->sprite);
  }

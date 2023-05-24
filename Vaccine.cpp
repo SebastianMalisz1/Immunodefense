@@ -2,13 +2,6 @@
 #include <iostream>
 
 
-void Vaccine::initVariables()
-{
-	this->cost = 20;
-	this->attackSpeed = 2.0f;
-	this->damage = 0;
-	this->attackRange = 0;
-}
 
 Vaccine::Vaccine() {
 	if (!this->texture.loadFromFile("Textures/vaccine.png"))
@@ -16,11 +9,11 @@ Vaccine::Vaccine() {
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
 	this->sprite.setTexture(this->texture);
-	this->sprite.scale(0.2f, 0.2f);
+	this->sprite.scale(0.4f, 0.4f);
 
 }
 
-Vaccine::Vaccine(sf::Vector2f positionOnMap){
+Vaccine::Vaccine(sf::Vector2f positionOnMap):Tower(positionOnMap) {
 
 	if (!this->texture.loadFromFile("Textures/vaccine.png"))
 	{
@@ -28,7 +21,7 @@ Vaccine::Vaccine(sf::Vector2f positionOnMap){
 	}
 
 	this->sprite.setTexture(this->texture);
-	this->sprite.scale(0.2f, 0.2f);
+	this->sprite.scale(0.4f, 0.4f);
 
 	this->sprite.setPosition(positionOnMap);
 }

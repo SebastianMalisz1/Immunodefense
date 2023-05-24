@@ -7,6 +7,8 @@
 #include "Virus.h"
 #include "Tower.h"
 #include "Vaccine.h"
+#include "Pellet.h"
+#include "Syringe.h"
 
 
 class Tower;
@@ -25,7 +27,9 @@ private:
 
 	std::vector<sf::RectangleShape> avaliableSpotsForTowers;
 
-	std::vector<Tower*> towersOnScreen;
+	std::vector<Vaccine*> vaccine;
+	std::vector<Pellet*> pellet;
+	std::vector<Syringe*> syringe;
 	//std::vector<Vaccine*> vaccines;
 
 	void initTexture();

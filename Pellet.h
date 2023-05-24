@@ -1,7 +1,33 @@
-//#pragma once
-//#include "Tower.h"
-//class Pellet :
-//    public Tower
-//{
-//};
-//
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include "Tower.h"
+
+class Pellet : public Tower
+{
+private:
+	int cost;
+	float attackSpeed;
+	int damage;
+	float attackRange;
+
+	sf::Sprite sprite;
+	sf::Texture texture;
+public:
+
+	sf::Vector2f position;
+
+
+
+
+	Pellet();
+	Pellet(sf::Vector2f positionOnMap);
+	~Pellet();
+	void render(sf::RenderTarget* target);
+
+};
+
