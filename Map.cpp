@@ -32,7 +32,7 @@ void Mapa::initTileMap()
                 sf::RectangleShape rectangle(sf::Vector2f(gridSize, gridSize));
                 rectangle.setPosition(i * gridSize, j * gridSize);
                 rectangle.setFillColor(sf::Color(0, 153, 76));
-                //rectangle.setOutlineThickness(1.0f);
+                /*rectangle.setOutlineThickness(1.0f);*/
                 rectangle.setOutlineColor(sf::Color::Black);
                 grids.push_back(rectangle);
             }
@@ -41,7 +41,7 @@ void Mapa::initTileMap()
                 sf::RectangleShape rectangle(sf::Vector2f(gridSize, gridSize));
                 rectangle.setPosition(i * gridSize, j * gridSize);
                 rectangle.setFillColor(sf::Color(255, 204, 153));
-                //rectangle.setOutlineThickness(1.0f);
+                /*rectangle.setOutlineThickness(1.0f);*/
                 rectangle.setOutlineColor(sf::Color::Black);
                 path.push_back(rectangle);
             }
@@ -50,7 +50,7 @@ void Mapa::initTileMap()
                 sf::RectangleShape rectangle(sf::Vector2f(gridSize, gridSize));
                 rectangle.setPosition(i * gridSize, j * gridSize);
                 rectangle.setFillColor(sf::Color(160, 160, 160));
-                //rectangle.setOutlineThickness(1.0f);
+               /* rectangle.setOutlineThickness(1.0f);*/
                 rectangle.setOutlineColor(sf::Color::Black);
                 placeForTower.push_back(rectangle);
             }

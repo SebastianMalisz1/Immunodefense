@@ -3,8 +3,9 @@
 
 void Enemy::initVariables()
 {
-	this->speed = 10.f;
-	this->hpMax = 10;
+	this->speedX = 0.f;
+	this->speedY = 0.f;
+	this->hpMax = 0;
 	this->hp = this->hpMax;
 	this->damage = 0;
 	this->gold = 0;

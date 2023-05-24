@@ -13,8 +13,8 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
-    
-    float speed;
+    float speedX;
+    float speedY;
 	int hp;
 	int hpMax;
 	int damage;
@@ -47,7 +47,7 @@ public:
       {1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
     };
 
-	Enemy();
+    Enemy();
 	virtual ~Enemy();
 
 	virtual const sf::FloatRect getBounds() const;

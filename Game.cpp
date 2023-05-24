@@ -31,11 +31,22 @@ Game::~Game()
 	delete this->window;
 
 	//Delete Enemies
-	for (auto* i : this->enemies)
+	for (auto* i : this->bacteria)
 	{
 		delete i;
 	}
-
+	for (auto* i : this->infection)
+	{
+		delete i;
+	}
+	for (auto* i : this->virus)
+	{
+		delete i;
+	}
+	for (auto* towers : this->towersOnScreen)
+	{
+		towers->render(this->window);
+	}
 }
 
 
@@ -48,10 +59,11 @@ void Game::run()
 	sf::Vector2f bounds;
 	sf::Event ev;
 	
-	sf::RectangleShape toggleMenu(sf::Vector2f(200, 100));
+	sf::RectangleShape toggleMenu(sf::Vector2f(600, 200));
 	
-	toggleMenu.setPosition(sf::Vector2f(300, 200));
+	toggleMenu.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f);
 	toggleMenu.setFillColor(sf::Color::White);
+	toggleMenu.setOrigin(toggleMenu.getLocalBounds().width / 2.0f, toggleMenu.getLocalBounds().height / 2.0f);
 	toggleMenu.setOutlineThickness(1.f);
 	toggleMenu.setOutlineColor(sf::Color::Black);
 
@@ -97,12 +109,16 @@ void Game::run()
 				this->towersOnScreen.push_back(new Tower(bounds));
 				openToggleTurret = false;
 			}
-			/*if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num1) {
-				this->towersOnScreen.push_back(new Tower(bounds));
+			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num2) {
+				std::cout << "kliknieto wieze\n";
+				this->towersOnScreen.push_back(new Vaccine(bounds));
 				openToggleTurret = false;
-			}*/
-
-				
+			}
+			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Num3) {
+				std::cout << "kliknieto wieze\n";
+				this->towersOnScreen.push_back(new Vaccine(bounds));
+				openToggleTurret = false;
+			}
 		
 		}
 		
@@ -114,7 +130,7 @@ void Game::run()
 		
 
 
-		this->updateBacteria();
+		this->updateEnemies();
 
 		//
 		//update entities
@@ -131,10 +147,6 @@ void Game::run()
 
 		//this->window->draw(toggleMenu);
 
-		if (openToggleTurret) {
-			this->window->draw(toggleMenu);
-
-		}
 		
 
 		//Draw all the stuff
@@ -143,39 +155,85 @@ void Game::run()
 			bacteria->render(this->window);
 		}
 
+		for (auto* infection : this->infection)
+		{
+			infection->render(this->window);
+		}
+		
+		for (auto* virus : this->virus)
+		{
+			virus->render(this->window);
+		}
+
 		for (auto* towers : this->towersOnScreen)
 		{
 			towers->render(this->window);
 		}
 
-		
+		if (openToggleTurret) {
+			this->window->draw(toggleMenu);
+
+		}
 		this->window->display();
 	}
 }
 
-void Game::updateBacteria()
+void Game::updateEnemies()
 {
+	//float startPathX;
+	//float startPathY;
 	//Spawning
-	this->spawnTimer += 0.5f;
+	this->spawnTimer += 0.1f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
+	/*	startPathX = map->path[0].getPosition().x;
+		startPathY = map->path[0].getPosition().y;*/
+
 		this->bacteria.push_back(new Bacteria(-10.f, 750.f));
+		this->infection.push_back(new Infection(-10.f, 750.f));
+		this->virus.push_back(new Virus(-10.f,750.f));
 		this->spawnTimer = 0.f;
 	}
 
 	//Update
-	unsigned counter = 0;
+	unsigned counterBacteria = 0;
 	for (auto* bacteria : this->bacteria)
 	{
 
 		bacteria->update(this->map);
 
-		if (bacteria->getBounds().left + 50.f > this->window->getSize().x)
+		if (bacteria->getBounds().left + 70.f > this->window->getSize().x)
 		{
-			delete this->bacteria.at(counter);
-			this->bacteria.erase(this->bacteria.begin() + counter);
+			delete this->bacteria.at(counterBacteria);
+			this->bacteria.erase(this->bacteria.begin() + counterBacteria);
 		}
-		++counter;
+		++counterBacteria;
+	}
+	unsigned counterInfection = 0;
+	for (auto* infection : this->infection)
+	{
+
+		infection->update(this->map);
+
+		if (infection->getBounds().left + 70.f > this->window->getSize().x)
+		{
+			delete this->infection.at(counterInfection);
+			this->infection.erase(this->infection.begin() + counterInfection);
+		}
+		++counterInfection;
+	}
+	unsigned counterVirus = 0;
+	for (auto* virus : this->virus)
+	{
+
+		virus->update(this->map);
+
+		if (virus->getBounds().left + 70.f > this->window->getSize().x)
+		{
+			delete this->virus.at(counterVirus);
+			this->virus.erase(this->virus.begin() + counterVirus);
+		}
+		++counterVirus;
 	}
 }
 
@@ -192,16 +250,16 @@ void Game::updateVaccine()
 //	this->updateBacteria();
 //}
 
-void Game::render()
-{
-	this->window->clear();
-	this->map->render(*this->window);
-
-	//Draw all the stuff
-	for (auto* bacteria : this->bacteria)
-	{
-		bacteria->render(this->window);
-	}
-
-	this->window->display();
-}
+//void Game::render()
+//{
+//	this->window->clear();
+//	this->map->render(*this->window);
+//
+//	//Draw all the stuff
+//	for (auto* bacteria : this->bacteria)
+//	{
+//		bacteria->render(this->window);
+//	}
+//
+//	this->window->display();
+//}

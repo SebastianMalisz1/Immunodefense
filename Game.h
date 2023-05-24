@@ -3,8 +3,11 @@
 #include "Map.h"
 #include "Enemy.h"
 #include "Bacteria.h"
+#include "Infection.h"
+#include "Virus.h"
 #include "Tower.h"
 #include "Vaccine.h"
+
 
 class Tower;
 
@@ -31,8 +34,9 @@ private:
 	//Enemies
 	float spawnTimer;
 	float spawnTimerMax;
-	std::vector<Enemy*> enemies;
 	std::vector<Bacteria*> bacteria;
+	std::vector<Infection*> infection;
+	std::vector<Virus*> virus;
 
 	void initWindow();
 	void initMap();
@@ -43,8 +47,8 @@ public:
 	virtual ~Game();
 
 	void run();
-	void updateBacteria();
+	void updateEnemies();
 	void updateVaccine();
-	void render();
+	//void render();
 };
 
