@@ -4,8 +4,6 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include "Enemy.h"
-#include "Bacteria.h"
 #include <iostream>
 
 const int initTab[19][10] = {
@@ -63,7 +61,6 @@ public:
 	Mapa();
 	~Mapa();
 
-	void update();
 	void render(sf::RenderTarget& target);
 	bool getCollision(sf::Sprite sprite);
 	std::vector<int> getPositionOnTileMap(sf::Sprite sprite);

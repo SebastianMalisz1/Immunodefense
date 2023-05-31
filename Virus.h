@@ -14,29 +14,29 @@ class Virus :
 	public Enemy
 {
 private:
-	sf::Sprite sprite;
-	sf::Texture texture;
+	//sf::Sprite sprite;
+	//sf::Texture texture;
 
-	float speedX;
-	float speedY;
-	int hp;
-	int hpMax;
-	int damage;
-	int gold;
+	//float speedX;
+	//float speedY;
+	//int hp;
+	//int hpMax;
+	//int damage;
+	//int gold;
 
-	Mapa* map;
+	//Mapa* map;
 
 	virtual void initVariables() override;
-	virtual void initTexture();
-	virtual void initSprite();
+	virtual void initTexture() override;
+	virtual void initSprite() override;
 
 
 public:
 	Virus(float pos_x, float pos_y);
 	virtual ~Virus();
 
-	const sf::FloatRect getBounds() const;
-	void update(Mapa* map);
-	void render(sf::RenderTarget* target);
+	//const sf::FloatRect getBounds() const;
+	virtual void update(Mapa* map) override;
+	virtual void render(sf::RenderTarget* target) override;
 };
 

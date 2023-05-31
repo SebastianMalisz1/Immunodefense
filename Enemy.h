@@ -5,11 +5,12 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Map.h"
 
 
 class Enemy
 {
-private:
+protected:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
@@ -20,11 +21,14 @@ private:
 	int damage;
 	int gold;
 
-	virtual void initVariables();
-	virtual void initTexture();
-	virtual void initSprite();
+
 
 public:
+
+    virtual void initVariables(){};
+    virtual void initTexture(){};
+    virtual void initSprite(){};
+
     const int initTab[19][10] = {
       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
@@ -51,7 +55,8 @@ public:
 	virtual ~Enemy();
 
 	virtual const sf::FloatRect getBounds() const;
-
+	virtual const sf::Vector2f getPos() const;
+    virtual void update(Mapa* map){};
 	virtual void render(sf::RenderTarget* target);
 
    

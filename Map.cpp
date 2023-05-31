@@ -80,7 +80,9 @@ bool Mapa::getCollision(sf::Sprite sprite)
         }
     }
     return returner;
-}
+} 
+
+
 
 std::vector<int> Mapa::getPositionOnTileMap(sf::Sprite sprite)
 {
@@ -124,20 +126,6 @@ Mapa::~Mapa()
 
 }
 
-
-void Mapa::update()
-{
-    for (int i = 0; i < width; i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            if (initTab[i][j] == 2) {
-                this->toggleTurret.setPosition(250.f, 250.f);
-                
-            }
-        }
-    }
-}
 
 void Mapa::render(sf::RenderTarget& target)
 {

@@ -55,10 +55,10 @@ Virus::Virus(float pos_x, float pos_y)
 
 Virus::~Virus() {}
 
-const sf::FloatRect Virus::getBounds() const
-{
-	return this->sprite.getGlobalBounds();
-}
+//const sf::FloatRect Virus::getBounds() const
+//{
+//	return this->sprite.getGlobalBounds();
+//}
 
 void Virus::update(Mapa* map)
 {

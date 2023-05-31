@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 #include "Map.h"
 #include "Enemy.h"
 #include "Bacteria.h"
@@ -9,6 +11,8 @@
 #include "Vaccine.h"
 #include "Pellet.h"
 #include "Syringe.h"
+#include "Bullet.h"
+#include "VaccineBullet.h"
 
 
 class Tower;
@@ -27,10 +31,9 @@ private:
 
 	std::vector<sf::RectangleShape> avaliableSpotsForTowers;
 
-	std::vector<Vaccine*> vaccine;
-	std::vector<Pellet*> pellet;
-	std::vector<Syringe*> syringe;
-	//std::vector<Vaccine*> vaccines;
+	std::vector<Tower*> towers;
+
+	std::vector<Bullet*> bullets;
 
 	void initTexture();
 	void initSprite();
@@ -38,9 +41,7 @@ private:
 	//Enemies
 	float spawnTimer;
 	float spawnTimerMax;
-	std::vector<Bacteria*> bacteria;
-	std::vector<Infection*> infection;
-	std::vector<Virus*> virus;
+	std::vector<Enemy*> enemies;
 
 	void initWindow();
 	void initMap();

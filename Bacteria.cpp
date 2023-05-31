@@ -55,10 +55,10 @@ Bacteria::Bacteria(float pos_x, float pos_y)
 
 Bacteria::~Bacteria(){}
 
-const sf::FloatRect Bacteria::getBounds() const
-{
-	return this->sprite.getGlobalBounds();
-}
+//const sf::FloatRect Bacteria::getBounds() const
+//{
+//	return this->sprite.getGlobalBounds();
+//}
 
 void Bacteria::update(Mapa* map)
 {

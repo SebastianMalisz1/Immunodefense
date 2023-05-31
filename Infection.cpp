@@ -55,10 +55,10 @@ Infection::Infection(float pos_x, float pos_y)
 
 Infection::~Infection() {}
 
-const sf::FloatRect Infection::getBounds() const
-{
-	return this->sprite.getGlobalBounds();
-}
+//const sf::FloatRect Infection::getBounds() const
+//{
+//	return this->sprite.getGlobalBounds();
+//}
 
 void Infection::update(Mapa* map)
 {

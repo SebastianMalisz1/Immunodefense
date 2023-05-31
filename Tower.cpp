@@ -23,6 +23,7 @@ Tower::Tower(sf::Vector2f positionOnMap){
 	this->sprite.setTexture(this->texture);
 
 	this->sprite.setPosition(positionOnMap);
+	position = positionOnMap;
 }
 
 Tower::~Tower() {

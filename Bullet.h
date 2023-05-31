@@ -5,26 +5,23 @@
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Tower.h"
 
-
-class Tower
+class Bullet
 {
 public:
-	int cost;
-	float attackSpeed;
-	int damage;
-	float attackRange = 1.f;
 
 	sf::Sprite sprite;
 	sf::Texture texture;
-
+	float angle;
+	int speed;
 	sf::Vector2f position;
+	int life = 1;
 
-
-	Tower();
-	Tower(sf::Vector2f positionOnMap);
-	~Tower();
-	virtual void render(sf::RenderTarget* target);
-
+	Bullet();
+	Bullet(sf::Vector2f position, float angle1);
+	~Bullet();
+	void update(sf::RenderTarget* target);
+	void render(sf::RenderTarget* target);
 };
 

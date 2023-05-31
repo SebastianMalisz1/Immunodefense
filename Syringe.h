@@ -9,25 +9,18 @@
 
 class Syringe : public Tower
 {
-private:
-	int cost;
-	float attackSpeed;
-	int damage;
-	float attackRange;
-
-	sf::Sprite sprite;
-	sf::Texture texture;
 public:
 
-	sf::Vector2f position;
+	void initVariables();
 
+	sf::CircleShape radius;
 
 
 
 	Syringe();
 	Syringe(sf::Vector2f positionOnMap);
 	~Syringe();
-	void render(sf::RenderTarget* target);
+	virtual void render(sf::RenderTarget* target) override;
 
 };
 
