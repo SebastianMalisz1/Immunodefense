@@ -21,7 +21,7 @@ public:
 	Bullet();
 	Bullet(sf::Vector2f position, float angle1);
 	~Bullet();
-	void update(sf::RenderTarget* target);
-	void render(sf::RenderTarget* target);
+	virtual void update(sf::RenderTarget* target);
+	virtual void render(sf::RenderTarget* target);
 };
 

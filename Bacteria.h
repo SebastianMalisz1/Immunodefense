@@ -36,6 +36,7 @@ public:
 
 	//const sf::FloatRect getBounds() const;
 	virtual void update(Mapa* map) override;
+	const int& getDamage() const override;
 	virtual void render(sf::RenderTarget* target) override;
 };
 

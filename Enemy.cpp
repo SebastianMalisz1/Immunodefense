@@ -46,6 +46,10 @@ const sf::Vector2f Enemy::getPos() const
 	return this->sprite.getPosition();
 }
 
+const int& Enemy::getDamage() const
+{
+	return this->damage;
+}
 
 void Enemy::render(sf::RenderTarget* target)
 {

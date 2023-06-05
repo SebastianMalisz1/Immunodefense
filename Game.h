@@ -13,6 +13,8 @@
 #include "Syringe.h"
 #include "Bullet.h"
 #include "VaccineBullet.h"
+#include "PelletBullet.h"
+#include "SyringeBullet.h"
 
 
 class Tower;
@@ -21,6 +23,17 @@ class Game
 {
 private:
 	sf::RenderWindow* window;
+	//Staring window
+	sf::Font font;
+	sf::Text startText;
+	sf::Text playText;
+	sf::Text leaderboardText;
+	sf::Text exitText;
+	sf::Text gameOverText;
+	sf::RectangleShape start;
+	sf::RectangleShape play;
+	sf::RectangleShape leaderboard;
+	sf::RectangleShape exit;
 
 	//Map
 	Mapa* map;
@@ -35,6 +48,8 @@ private:
 
 	std::vector<Bullet*> bullets;
 
+	int hp = 10;
+
 	void initTexture();
 	void initSprite();
 	
@@ -43,6 +58,7 @@ private:
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
 
+	void initStartWindow();
 	void initWindow();
 	void initMap();
 	void initBacteria();

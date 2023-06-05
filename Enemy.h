@@ -56,6 +56,7 @@ public:
 
 	virtual const sf::FloatRect getBounds() const;
 	virtual const sf::Vector2f getPos() const;
+    virtual const int& getDamage() const;
     virtual void update(Mapa* map){};
 	virtual void render(sf::RenderTarget* target);
 

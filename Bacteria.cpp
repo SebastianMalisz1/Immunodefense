@@ -76,15 +76,13 @@ void Bacteria::update(Mapa* map)
 			this->sprite.setPosition(sprite.getPosition().x - 1.f, sprite.getPosition().y);
 			this->speedX = 0.f;
 			this->speedY = 1.0f;
-			this->sprite.move(this->speedX, this->speedY);
-			
+			this->sprite.move(this->speedX, this->speedY);	
 		}
 		if (initTab[posVector[0]+1][posVector[1]] == 0 && initTab[posVector[0]][posVector[1] -1] == 0) {
 			this->sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 1.f);
 			this->speedX = 1.0f;
 			this->speedY = 0.f;
 			this->sprite.move(this->speedX, this->speedY);
-
 		}	
 		if (initTab[posVector[0]][posVector[1] - 1] == 0 && initTab[posVector[0] -1][posVector[1]] == 0) {
 			this->sprite.setPosition(sprite.getPosition().x - 1.f, sprite.getPosition().y);
@@ -101,7 +99,10 @@ void Bacteria::update(Mapa* map)
 	}
 }
 
-
+const int& Bacteria::getDamage() const
+{
+	return this->damage;
+}
 
 void Bacteria::render(sf::RenderTarget* target)
 {
