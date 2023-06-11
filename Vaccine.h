@@ -13,7 +13,7 @@ class Vaccine: public Tower
 {
 public:
 
-	void initVariables();
+	virtual void initVariables() override;
 
 	sf::CircleShape radius;
 
@@ -22,6 +22,7 @@ public:
 	Vaccine();
 	Vaccine(sf::Vector2f positionOnMap);
 	~Vaccine();
+	virtual void upgrade() override;
 	virtual void render(sf::RenderTarget* target) override;
 
 };

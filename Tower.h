@@ -13,7 +13,9 @@ public:
 	int cost;
 	float attackSpeed;
 	int damage;
-	float attackRange = 1.f;
+	float attackRange;
+
+	virtual void initVariables();
 
 	sf::Sprite sprite;
 	sf::Texture texture;
@@ -24,6 +26,7 @@ public:
 	Tower();
 	Tower(sf::Vector2f positionOnMap);
 	~Tower();
+	virtual void upgrade();
 	virtual void render(sf::RenderTarget* target);
 
 };

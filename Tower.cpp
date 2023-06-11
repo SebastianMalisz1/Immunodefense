@@ -2,7 +2,13 @@
 
 #include <iostream>
 
-
+void Tower::initVariables()
+{
+	this->cost = 0;
+	this->attackSpeed = 0.f;
+	this->damage = 0;
+	this->attackRange = 0.f;
+}
 
 Tower::Tower(){
 	if (!this->texture.loadFromFile("Textures/tower.png"))
@@ -27,6 +33,11 @@ Tower::Tower(sf::Vector2f positionOnMap){
 }
 
 Tower::~Tower() {
+
+}
+
+void Tower::upgrade()
+{
 
 }
 

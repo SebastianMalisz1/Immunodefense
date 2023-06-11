@@ -11,7 +11,7 @@ class Syringe : public Tower
 {
 public:
 
-	void initVariables();
+	virtual void initVariables() override;
 
 	sf::CircleShape radius;
 
@@ -20,6 +20,7 @@ public:
 	Syringe();
 	Syringe(sf::Vector2f positionOnMap);
 	~Syringe();
+	virtual void upgrade() override;
 	virtual void render(sf::RenderTarget* target) override;
 
 };

@@ -13,7 +13,7 @@ void Syringe::initVariables()
 
 Syringe::Syringe() {
 	initVariables();
-	if (!this->texture.loadFromFile("Textures/zielonyWir.png"))
+	if (!this->texture.loadFromFile("Textures/syringe.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -32,7 +32,7 @@ Syringe::Syringe() {
 Syringe::Syringe(sf::Vector2f positionOnMap) :Tower(positionOnMap) {
 	initVariables();
 
-	if (!this->texture.loadFromFile("Textures/zielonyWir.png"))
+	if (!this->texture.loadFromFile("Textures/syringe.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -53,6 +53,12 @@ Syringe::Syringe(sf::Vector2f positionOnMap) :Tower(positionOnMap) {
 
 Syringe::~Syringe() {
 
+}
+
+void Syringe::upgrade()
+{
+	this->attackRange += 50.f;
+	this->damage += 0.5;
 }
 
 void Syringe::render(sf::RenderTarget* target) {

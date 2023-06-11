@@ -58,6 +58,27 @@ void Game::initStartWindow()
 	this->exitText.setFillColor(sf::Color::Black);
 }
 
+void Game::initText()
+{
+	if (!this->font.loadFromFile("Font/Lato-BlackItalic.ttf"))
+	{
+		std::cout << "ERROR::GAME::FAILED TO LOAD FONT" << "\n";
+	}
+
+
+	this->health.setPosition(20.f, 20.f);
+	this->health.setFont(this->font);
+	this->health.setCharacterSize(24);
+	this->health.setFillColor(sf::Color::Black);
+	
+
+	this->goldText.setPosition(100.f, 20.f);
+	this->goldText.setFont(this->font);
+	this->goldText.setCharacterSize(24);
+	this->goldText.setFillColor(sf::Color::White);
+}
+
+
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Immunodefence", sf::Style::Close | sf::Style::Titlebar);
@@ -79,6 +100,7 @@ void Game::initBacteria()
 Game::Game()
 {
 	this->initStartWindow();
+	this->initText();
 	this->initWindow();
 	this->initMap();
 	this->initBacteria();
@@ -111,20 +133,15 @@ void Game::run()
 	sf::Event ev;
 
 	initStartWindow();
+	initText();
 
-
-	sf::RectangleShape toggleMenu(sf::Vector2f(600, 200));
-
-	toggleMenu.setPosition(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f);
-	toggleMenu.setFillColor(sf::Color::White);
-	toggleMenu.setOrigin(toggleMenu.getLocalBounds().width / 2.0f, toggleMenu.getLocalBounds().height / 2.0f);
-	toggleMenu.setOutlineThickness(1.f);
-	toggleMenu.setOutlineColor(sf::Color::Black);
-
-	sf::RectangleShape togr(sf::Vector2f(100, 100));
-	togr.setFillColor(sf::Color::White);
-	togr.setOutlineThickness(1.f);
-	togr.setOutlineColor(sf::Color::Black);
+	if (!this->toggleTurretTexture.loadFromFile("Textures/toggleMenu.png"))
+	{
+		std::cout << "ERROR::GAME::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
+	}
+	this->toggleTurret.setTexture(this->toggleTurretTexture);
+	this->toggleTurret.setOrigin(sf::Vector2f(this->toggleTurret.getLocalBounds().width / 2.0f, this->toggleTurret.getLocalBounds().height / 2.0f));
+	this->toggleTurret.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f));
 
 
 
@@ -171,20 +188,17 @@ void Game::run()
 				
 				if (j == 1) {
 					if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num1) {
-						std::cout << "kliknieto wieze\n";
-						this->towers.push_back(new Vaccine(bounds));
+						this->towers.push_back(new Syringe(bounds));
 						openToggleTurret = false;
 						j = 0;
 					}
 					else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num2) {
-						std::cout << "kliknieto wieze\n";
 						this->towers.push_back(new Pellet(bounds));
 						openToggleTurret = false;
 						j = 0;
 					}
 					else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num3) {
-						std::cout << "kliknieto wieze\n";
-						this->towers.push_back(new Syringe(bounds));
+						this->towers.push_back(new Vaccine(bounds));
 						openToggleTurret = false;
 						j = 0;
 					}
@@ -221,7 +235,7 @@ void Game::run()
 					double dy = closestEnemy->getPos().y - towers[i]->position.y;
 					double angle = std::atan2(dy, dx) * 180 / 3.14;
 					if (minimumDistance < this->towers[i]->attackRange) {
-						this->bullets.push_back(new BulletVaccine(this->towers[i]->position, angle));
+						this->bullets.push_back(new VaccineBullet(this->towers[i]->position, angle));
 					}
 					for (int i = 0; i < bullets.size(); i++) {
 						for (int j = 0; j < enemies.size(); j++) {
@@ -300,6 +314,7 @@ void Game::run()
 								delete this->bullets[i];
 								this->bullets.erase(this->bullets.begin() + i);
 								i--;
+								//this->enemies[j]->
 								delete this->enemies[j];
 								this->enemies.erase(this->enemies.begin() + j);
 								j--;  // Decrement the index since the vector has been modified
@@ -312,8 +327,19 @@ void Game::run()
 			//
 			//update entities
 			//
+			
 
 			this->window->clear();
+
+			std::stringstream ss;
+			ss << "Health: " << this->hp;
+			this->health.setString(ss.str());
+
+
+			std::stringstream ss1;
+			ss1 << "Gold: " << this->gold;
+			this->goldText.setString(ss1.str());
+
 			if (!startGame) {
 				this->window->draw(this->start);
 				this->window->draw(this->startText);
@@ -325,6 +351,8 @@ void Game::run()
 				this->window->draw(this->exitText);
 			}
 			else {
+				this->window->draw(this->health);
+				this->window->draw(this->goldText);
 				this->updateEnemies();
 				this->map->render(*this->window);
 
@@ -353,7 +381,7 @@ void Game::run()
 				}
 
 				if (openToggleTurret) {
-					this->window->draw(toggleMenu);
+					this->window->draw(this->toggleTurret);
 
 				}
 			}
@@ -386,4 +414,5 @@ void Game::updateEnemies()
 		++counterBacteria;
 	}
 }
+
 

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <string>
+#include <sstream>
 #include "Map.h"
 #include "Enemy.h"
 #include "Bacteria.h"
@@ -16,8 +18,6 @@
 #include "PelletBullet.h"
 #include "SyringeBullet.h"
 
-
-class Tower;
 
 class Game
 {
@@ -35,6 +35,9 @@ private:
 	sf::RectangleShape leaderboard;
 	sf::RectangleShape exit;
 
+	sf::Text goldText;
+	sf::Text health;
+
 	//Map
 	Mapa* map;
 
@@ -49,9 +52,7 @@ private:
 	std::vector<Bullet*> bullets;
 
 	int hp = 10;
-
-	void initTexture();
-	void initSprite();
+	int gold = 0;
 	
 	//Enemies
 	float spawnTimer;
@@ -59,6 +60,8 @@ private:
 	std::vector<Enemy*> enemies;
 
 	void initStartWindow();
+	void initText();
+	void initToggleMenu();
 	void initWindow();
 	void initMap();
 	void initBacteria();

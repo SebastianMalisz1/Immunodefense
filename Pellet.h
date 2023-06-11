@@ -12,7 +12,7 @@ class Pellet : public Tower
 public:
 
 
-	void initVariables();
+	virtual void initVariables() override;
 
 
 	sf::CircleShape radius;
@@ -23,6 +23,7 @@ public:
 	Pellet();
 	Pellet(sf::Vector2f positionOnMap);
 	~Pellet();
+	virtual void upgrade() override;
 	virtual void render(sf::RenderTarget* target) override;
 
 };

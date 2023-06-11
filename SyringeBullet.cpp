@@ -4,7 +4,7 @@
 
 
 SyringeBullet::SyringeBullet() {
-	if (!this->texture.loadFromFile("Textures/zielonyWir.png"))
+	if (!this->texture.loadFromFile("Textures/syringe.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -15,7 +15,7 @@ SyringeBullet::SyringeBullet() {
 
 SyringeBullet::SyringeBullet(sf::Vector2f positionOnMap, float angle1) {
 
-	if (!this->texture.loadFromFile("Textures/zielonyWir.png"))
+	if (!this->texture.loadFromFile("Textures/syringe.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}

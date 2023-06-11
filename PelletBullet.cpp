@@ -3,7 +3,7 @@
 
 
 PelletBullet::PelletBullet() {
-	if (!this->texture.loadFromFile("Textures/czerwonaBak.png"))
+	if (!this->texture.loadFromFile("Textures/pellet.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -14,7 +14,7 @@ PelletBullet::PelletBullet() {
 
 PelletBullet::PelletBullet(sf::Vector2f positionOnMap, float angle1) {
 
-	if (!this->texture.loadFromFile("Textures/czerwonaBak.png"))
+	if (!this->texture.loadFromFile("Textures/pellet.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}

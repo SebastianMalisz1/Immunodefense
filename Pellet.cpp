@@ -13,7 +13,7 @@ void Pellet::initVariables()
 
 Pellet::Pellet() {
 	initVariables();
-	if (!this->texture.loadFromFile("Textures/czerwonaBak.png"))
+	if (!this->texture.loadFromFile("Textures/pellet.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -31,7 +31,7 @@ Pellet::Pellet() {
 Pellet::Pellet(sf::Vector2f positionOnMap) :Tower(positionOnMap) {
 	initVariables();
 
-	if (!this->texture.loadFromFile("Textures/czerwonaBak.png"))
+	if (!this->texture.loadFromFile("Textures/pellet.png"))
 	{
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
@@ -53,6 +53,12 @@ Pellet::Pellet(sf::Vector2f positionOnMap) :Tower(positionOnMap) {
 
 Pellet::~Pellet() {
 
+}
+
+void Pellet::upgrade()
+{
+	this->attackRange += 20.f;
+	this->damage += 1;
 }
 
 void Pellet::render(sf::RenderTarget* target) {

@@ -18,7 +18,6 @@ Vaccine::Vaccine() {
 		std::cout << "ERROR::VACCINE::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
 	this->sprite.setTexture(this->texture);
-	this->sprite.scale(0.4f, 0.4f);
 	
 	float radiusSize = this->attackRange;
 
@@ -39,7 +38,6 @@ Vaccine::Vaccine(sf::Vector2f positionOnMap):Tower(positionOnMap) {
 	}
 
 	this->sprite.setTexture(this->texture);
-	this->sprite.scale(0.4f, 0.4f);
 	
 	float radiusSize = this->attackRange;
 
@@ -58,6 +56,10 @@ Vaccine::~Vaccine() {
 
 }
 
+void Vaccine::upgrade() {
+	this->attackRange += 30.f;
+	this->damage += 1;
+}
 
 void Vaccine::render(sf::RenderTarget* target) {
 	target->draw(this->sprite);
