@@ -6,30 +6,20 @@ void Virus::initVariables()
 {
 	this->speedX = 0.7f;
 	this->speedY = 0.f;
-	this->hpMax = 4;
+	this->hpMax = 20;
 	this->hp = this->hpMax;
-	this->damage = 1;
+	this->damage = 2;
 	this->gold = 15;
 }
 
 void Virus::initTexture()
 {
-	//srand(time(NULL));
-	//int liczbaLosowa = rand() % 3;
-	//std::cout << liczbaLosowa << std::endl;
-	//
-	if (/*liczbaLosowa == 0 && */!this->texture.loadFromFile("Textures/zoltaBak.png"))
+
+	if (!this->texture.loadFromFile("Textures/zoltaBak.png"))
 	{
 		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
-	/*if (liczbaLosowa == 1 && !this->texture.loadFromFile("Textures/zoltaBak.png"))
-	{
-		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
-	}
-	if (liczbaLosowa == 2 && !this->texture.loadFromFile("Textures/zielonyWir.png"))
-	{
-		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
-	}*/
+
 
 }
 
@@ -101,8 +91,32 @@ void Virus::update(Mapa* map)
 	}
 }
 
+void Virus::loseHp(const int value) {
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
 
+const int& Virus::getDamage() const
+{
+	return this->damage;
+}
+void Virus::upgrade()
+{
+	this->hpMax = 30;
+	this->hp = this->hpMax;
+}
 
+void Virus::upgrade2()
+{
+	this->hpMax = 40;
+	this->hp = this->hpMax;
+}
+void Virus::upgrade3()
+{
+	this->hpMax = 50;
+	this->hp = this->hpMax;
+}
 void Virus::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);

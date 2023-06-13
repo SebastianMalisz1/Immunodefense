@@ -10,7 +10,7 @@
 
 class Enemy
 {
-protected:
+public:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
@@ -23,14 +23,14 @@ protected:
 
 
 
-public:
+
 
     virtual void initVariables(){};
     virtual void initTexture(){};
     virtual void initSprite(){};
 
     const int initTab[19][10] = {
-        {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 2, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 0, 0, 0, 0, 1, 1},
@@ -39,12 +39,12 @@ public:
       {1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
       {1, 1, 1, 2, 0, 2, 1, 1, 1, 1},
       {1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
-      {1, 1, 1, 1, 1, 2, 0, 1, 1, 1},
+      {1, 1, 1, 1, 2, 1, 0, 1, 1, 1},
       {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
       {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
       {1, 1, 1, 1, 1, 1, 0, 2, 1, 1},
-      {1, 2, 2, 1, 1, 1, 0, 0, 1, 1},
-      {1, 2, 2, 1, 1, 1, 2, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 0, 0, 1, 1},
+      {1, 1, 1, 1, 1, 1, 2, 0, 1, 1},
       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
       {1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
@@ -57,6 +57,10 @@ public:
 	virtual const sf::FloatRect getBounds() const;
 	virtual const sf::Vector2f getPos() const;
     virtual const int& getDamage() const;
+    virtual void loseHp(const int value);
+    virtual void upgrade();
+    virtual void upgrade2();
+    virtual void upgrade3();
     virtual void update(Mapa* map){};
 	virtual void render(sf::RenderTarget* target);
 

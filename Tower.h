@@ -26,6 +26,7 @@ public:
 	Tower();
 	Tower(sf::Vector2f positionOnMap);
 	~Tower();
+	virtual const sf::FloatRect getBounds() const;
 	virtual void upgrade();
 	virtual void render(sf::RenderTarget* target);
 

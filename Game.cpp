@@ -1,5 +1,50 @@
 ﻿#include "Game.h"
 
+struct PlayerScore {
+	std::string nickname;
+	int points;
+};
+
+bool compareScores(const PlayerScore& a, const PlayerScore& b) {
+	return a.points > b.points;
+}
+
+void saveLeaderboard(const std::vector<PlayerScore>& leaderboard) {
+	std::ofstream file("leaderboard.txt");
+	if (file.is_open()) {
+		for (const PlayerScore& playerScore : leaderboard) {
+			file << playerScore.nickname << " " << playerScore.points << "\n";
+		}
+		file.close();
+		std::cout << "Leaderboard saved successfully.\n";
+	}
+	else {
+		std::cerr << "Failed to save leaderboard.\n";
+	}
+}
+
+std::vector<PlayerScore> loadLeaderboard() {
+	std::vector<PlayerScore> leaderboard;
+	std::ifstream file("leaderboard.txt");
+	if (file.is_open()) {
+		std::string line;
+		while (std::getline(file, line)) {
+			std::istringstream iss(line);
+			std::string nickname;
+			int points;
+			if (iss >> nickname >> points) {
+				leaderboard.push_back({ nickname, points });
+			}
+		}
+		file.close();
+		//std::cout << "Leaderboard loaded successfully.\n";
+	}
+	else {
+		std::cerr << "Failed to load leaderboard.\n";
+	}
+	return leaderboard;
+}
+
 void Game::initStartWindow()
 {
 	sf::FloatRect playTextBounds = playText.getLocalBounds();
@@ -20,11 +65,11 @@ void Game::initStartWindow()
 	this->play.setOutlineThickness(4.f);
 	this->play.setOutlineColor(sf::Color::Black);
 
-	this->leaderboard.setSize(sf::Vector2f(300.f, 100.f));
-	this->leaderboard.setPosition(800.f, 650.f);
-	this->leaderboard.setFillColor(sf::Color::White);
-	this->leaderboard.setOutlineThickness(4.f);
-	this->leaderboard.setOutlineColor(sf::Color::Black);
+	this->leaderboardRectangle.setSize(sf::Vector2f(300.f, 100.f));
+	this->leaderboardRectangle.setPosition(800.f, 650.f);
+	this->leaderboardRectangle.setFillColor(sf::Color::White);
+	this->leaderboardRectangle.setOutlineThickness(4.f);
+	this->leaderboardRectangle.setOutlineColor(sf::Color::Black);
 
 	this->exit.setSize(sf::Vector2f(300.f, 100.f));
 	this->exit.setPosition(800.f, 800.f);
@@ -45,7 +90,7 @@ void Game::initStartWindow()
 	this->playText.setString("PLAY");
 	this->playText.setFillColor(sf::Color::Black);
 
-	this->leaderboardText.setPosition(this->leaderboard.getPosition().x + 15.f, this->leaderboard.getPosition().y + 23.f);
+	this->leaderboardText.setPosition(this->leaderboardRectangle.getPosition().x + 15.f, this->leaderboardRectangle.getPosition().y + 23.f);
 	this->leaderboardText.setFont(this->font);
 	this->leaderboardText.setCharacterSize(40);
 	this->leaderboardText.setString("LEADERBOARD");
@@ -56,6 +101,51 @@ void Game::initStartWindow()
 	this->exitText.setCharacterSize(80);
 	this->exitText.setString("EXIT");
 	this->exitText.setFillColor(sf::Color::Black);
+}
+void Game::initLeaderboardWindow()
+{
+	if (!this->font.loadFromFile("Font/Lato-BlackItalic.ttf"))
+	{
+		std::cout << "ERROR::GAME::FAILED TO LOAD FONT" << "\n";
+	}
+
+	this->leaderboardScreenShow.setSize(sf::Vector2f(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+	this->leaderboardScreenShow.setFillColor(sf::Color::Black);
+
+	////Init point text
+	this->leaderboardTitle.setPosition(sf::Vector2f(300.f, 25.f));
+	this->leaderboardTitle.setFont(this->font);
+	this->leaderboardTitle.setCharacterSize(200);
+	this->leaderboardTitle.setString("LEADERBOARD");
+	this->leaderboardTitle.setFillColor(sf::Color::White);
+
+	this->nicknameTextinLeanderboard.setPosition(800.f,300.f);
+	this->nicknameTextinLeanderboard.setFont(this->font);
+	this->nicknameTextinLeanderboard.setCharacterSize(40);
+	this->nicknameTextinLeanderboard.setFillColor(sf::Color::White);
+
+	this->backButton.setSize(sf::Vector2f(300.f, 100.f));
+	this->backButton.setPosition(800.f, 900.f);
+	this->backButton.setFillColor(sf::Color::White);
+	this->backButton.setOutlineThickness(4.f);
+	this->backButton.setOutlineColor(sf::Color::Black);
+
+	this->backButtonText.setPosition(this->backButton.getPosition().x + 55.f, this->backButton.getPosition().y);
+	this->backButtonText.setFont(this->font);
+	this->backButtonText.setCharacterSize(80);
+	this->backButtonText.setString("BACK");
+	this->backButtonText.setFillColor(sf::Color::Black);
+}
+void Game::startTimer()
+{
+	startTime = std::chrono::steady_clock::now();
+}
+
+bool Game::isDurationPassed(std::chrono::steady_clock::duration duration)
+{
+	auto currentTime = std::chrono::steady_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime);
+	return elapsed >= duration;
 }
 
 void Game::initText()
@@ -72,10 +162,81 @@ void Game::initText()
 	this->health.setFillColor(sf::Color::Black);
 	
 
-	this->goldText.setPosition(100.f, 20.f);
+	this->goldText.setPosition(150, 20.f);
 	this->goldText.setFont(this->font);
 	this->goldText.setCharacterSize(24);
-	this->goldText.setFillColor(sf::Color::White);
+	this->goldText.setFillColor(sf::Color::Black);
+
+
+
+
+}
+
+void Game::initGameOverWindow()
+{
+	if (!this->font.loadFromFile("Font/Lato-BlackItalic.ttf"))
+	{
+		std::cout << "ERROR::GAME::FAILED TO LOAD FONT" << "\n";
+	}
+
+	this->endGame.setSize(sf::Vector2f(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+	this->endGame.setFillColor(sf::Color::Black);
+
+	this->gameOverText.setFont(this->font);
+	this->gameOverText.setCharacterSize(120);
+	this->gameOverText.setFillColor(sf::Color::Red);
+	this->gameOverText.setString("GAME OVER!");
+	this->gameOverText.setPosition(sf::Vector2f(600.f, 100.f));
+
+	this->pointsText.setPosition(sf::Vector2f(600.f, 300.f));
+	this->pointsText.setFont(this->font);
+	this->pointsText.setCharacterSize(60);
+	this->pointsText.setFillColor(sf::Color::White);
+
+	this->enterNicknameText.setFont(this->font);
+	this->enterNicknameText.setCharacterSize(60);
+	this->enterNicknameText.setFillColor(sf::Color::White);
+	this->enterNicknameText.setString("Enter your nickname: ");
+	this->enterNicknameText.setPosition(sf::Vector2f(600.f, 400.f));
+
+	this->inputbox.setPosition(sf::Vector2f(600.f, 500.f));
+	this->inputbox.setSize(sf::Vector2f(300.f, 100.f));
+	this->inputbox.setFillColor(sf::Color::Black);
+
+	this->nicknameText.setPosition(this->inputbox.getPosition().x, this->inputbox.getPosition().y);
+	this->nicknameText.setFont(this->font);
+	this->nicknameText.setCharacterSize(60);
+	this->nicknameText.setFillColor(sf::Color::White);
+
+
+
+	this->hintNicknameText.setFont(this->font);
+	this->hintNicknameText.setCharacterSize(16);
+	this->hintNicknameText.setFillColor(sf::Color::White);
+	this->hintNicknameText.setString("Only small letters allowed");
+	this->hintNicknameText.setPosition(sf::Vector2f(600.f, 600.f));
+
+
+	this->playAgain.setPosition(sf::Vector2f(600.f,800.f));
+	this->playAgain.setSize(sf::Vector2f(300.f, 50.f));
+	this->playAgain.setFillColor(sf::Color::White);
+
+	this->playAgainText.setFont(this->font);
+	this->playAgainText.setCharacterSize(40);
+	this->playAgainText.setFillColor(sf::Color::Black);
+	this->playAgainText.setString("PLAY AGAIN");
+	this->playAgainText.setPosition(this->playAgain.getPosition().x + 30.f, this->playAgain.getPosition().y);
+
+	this->exitGameOver.setPosition(sf::Vector2f(950.f, 800.f));
+	this->exitGameOver.setSize(sf::Vector2f(300.f, 50.f));
+	this->exitGameOver.setFillColor(sf::Color::White);
+
+	this->exitGameOverText.setFont(this->font);
+	this->exitGameOverText.setCharacterSize(40);
+	this->exitGameOverText.setFillColor(sf::Color::Black);
+	this->exitGameOverText.setString("EXIT");
+	this->exitGameOverText.setPosition(this->exitGameOver.getPosition().x + 100.f, this->exitGameOver.getPosition().y);
+
 }
 
 
@@ -101,6 +262,8 @@ Game::Game()
 {
 	this->initStartWindow();
 	this->initText();
+	this->initLeaderboardWindow();
+	this->initGameOverWindow();
 	this->initWindow();
 	this->initMap();
 	this->initBacteria();
@@ -122,17 +285,40 @@ Game::~Game()
 }
 
 bool j = 0;
+bool z = 0;
+const int spawnIntervalMillis1 = 500;  // Time between arrow spawns in milliseconds
+const int spawnIntervalMillis2 = 500;  // Time between arrow spawns in milliseconds
+const int spawnIntervalMillis4 = 500;  // Time between arrow spawns in milliseconds
+auto lastSpawnTime = std::chrono::steady_clock::now();
 void Game::run()
 {
 	//po klikniciu myszka utw�rz w miejscu klikneicia sprite w kt�rym b�dzie opcja wyboru wierzy (grafika gdzie sa namalowanie wierze i odpowiadajace im przyciski)
 	bool openToggleTurret = false;
+	bool openTurretUpgrade = false;
 	bool startGame = false;
+	bool leaderboardScreen = false;
+	this->gold = 500;
+	this->hp = 10;
+	this->points = 0;
+
+	sf::Clock clock;
+	float elapsedTime = 0.f;
+	sf::Time updateInterval = sf::seconds(1.f);
+
 	for (int i = 0; i < this->map->placeForTower.size(); i++)
 		this->avaliableSpotsForTowers.push_back(this->map->placeForTower[i]);
+
+	for (int i = 0; i < this->map->placeForTower.size(); i++)
+		this->towersForUpgrade.push_back(this->map->placeForTower[i]);
+
 	sf::Vector2f bounds;
 	sf::Event ev;
+	std::string nickname;
+	bool validNickname = false;
 
+	startTimer();
 	initStartWindow();
+	initLeaderboardWindow();
 	initText();
 
 	if (!this->toggleTurretTexture.loadFromFile("Textures/toggleMenu.png"))
@@ -143,7 +329,23 @@ void Game::run()
 	this->toggleTurret.setOrigin(sf::Vector2f(this->toggleTurret.getLocalBounds().width / 2.0f, this->toggleTurret.getLocalBounds().height / 2.0f));
 	this->toggleTurret.setPosition(sf::Vector2f(sf::VideoMode::getDesktopMode().width / 2.0f, sf::VideoMode::getDesktopMode().height / 2.0f));
 
+	if (!this->font.loadFromFile("Font/Lato-BlackItalic.ttf"))
+	{
+		std::cout << "ERROR::GAME::FAILED TO LOAD FONT" << "\n";
+	}
+	sf::FloatRect upgradeTextBounds = upgradeText.getLocalBounds();
 
+	this->upgrade.setSize(sf::Vector2f(300.f, 100.f));
+	this->upgrade.setPosition(800.f, 650.f);
+	this->upgrade.setFillColor(sf::Color::White);
+	this->upgrade.setOutlineThickness(4.f);
+	this->upgrade.setOutlineColor(sf::Color::Black);
+
+	this->upgradeText.setPosition(this->upgrade.getPosition().x + 55.f, this->upgrade.getPosition().y);
+	this->upgradeText.setFont(this->font);
+	this->upgradeText.setCharacterSize(40);
+	this->upgradeText.setString("UPGRADE");
+	this->upgradeText.setFillColor(sf::Color::Black);
 
 	while (this->window->isOpen())
 	{
@@ -156,22 +358,80 @@ void Game::run()
 				this->window->close();
 			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Escape)
 				this->window->close();
+			if (ev.Event::KeyPressed && ev.Event::key.code == sf::Keyboard::Space)
+				openToggleTurret = false;
 			if (ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Left) {
 				sf::FloatRect playButton = this->play.getGlobalBounds();
-				sf::FloatRect leaderboardButton = this->leaderboard.getGlobalBounds();
+				sf::FloatRect leaderboardButton = this->leaderboardRectangle.getGlobalBounds();
 				sf::FloatRect exitButton = this->exit.getGlobalBounds();
+				sf::FloatRect backButton = this->backButton.getGlobalBounds();
+				sf::FloatRect playAgainButton = this->playAgain.getGlobalBounds();
 				if (playButton.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) {
 					startGame = true;
 				}
 				if (leaderboardButton.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) {
-
+					leaderboardScreen = true;
 				}
 				if (exitButton.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) {
 					this->window->close();
 				}
+				if (leaderboardScreen)
+				{
+					if (backButton.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y))
+					{
+						startGame = false;
+						leaderboardScreen = false;
+						break;
+					}
+				}
 			}
-			if (ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Left) {
+			if (hp <= 0)
+			{
+				if (ev.type == sf::Event::TextEntered) {
+					if (ev.text.unicode < 128) {
+						if (ev.text.unicode == '\b' && !nickname.empty()) {
+							// Handle backspace key
+							nickname.pop_back();
+						}
+						else if (ev.text.unicode != '\r' && ev.text.unicode != '\n') {
+							// Append entered character to inputString (excluding Enter key)
+							char c = static_cast<char>(ev.text.unicode);
+							if (std::regex_match(std::string(1, c), std::regex("[a-z]"))) {
+								nickname += c;
+							}
+						}
+					}
+				}
+				if ((ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Left)) {
+					sf::FloatRect playAgainButton = this->playAgain.getGlobalBounds();
+					sf::FloatRect exitGameOverButon = this->exitGameOver.getGlobalBounds();
+					/*if (playAgainButton.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y))
+					{
+						validNickname = std::regex_match(nickname, std::regex("[a-z]+"));
+						std::vector<PlayerScore> leaderboard = loadLeaderboard();
+						leaderboard.push_back({ nickname, this->points });
+						std::sort(leaderboard.begin(), leaderboard.end(), compareScores);
+						saveLeaderboard(leaderboard);
+						startGame = false;
+						leaderboardScreen = false;
+						break;
+					}*/
+					if (exitGameOverButon.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y))
+					{
+						validNickname = std::regex_match(nickname, std::regex("[a-z]+"));
+						std::vector<PlayerScore> leaderboard = loadLeaderboard();
+						leaderboard.push_back({ nickname, this->points });
+						std::sort(leaderboard.begin(), leaderboard.end(), compareScores);
+						saveLeaderboard(leaderboard);
+						this->window->close();
+					}
+				}
+				nicknameText.setString(nickname);
+			}
 				
+			
+			if (ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Left) {
+
 				//finding avaliable spots for and palcing the tower there
 				for (int i = 0; i < this->avaliableSpotsForTowers.size(); i++)
 				{
@@ -185,41 +445,73 @@ void Game::run()
 					}
 				}
 			}
-				
-				if (j == 1) {
-					if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num1) {
-						this->towers.push_back(new Syringe(bounds));
-						openToggleTurret = false;
-						j = 0;
-					}
-					else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num2) {
-						this->towers.push_back(new Pellet(bounds));
-						openToggleTurret = false;
-						j = 0;
-					}
-					else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num3) {
-						this->towers.push_back(new Vaccine(bounds));
-						openToggleTurret = false;
-						j = 0;
-					}
+			if (j == 1) {
+				if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num1 && this->gold >= 200) {
+					this->towers.push_back(new Syringe(bounds));
+					openToggleTurret = false;
+					j = 0;
+					this->gold -= 200;
 				}
+				else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num2 && this->gold >= 100) {
+					this->towers.push_back(new Pellet(bounds));
+					openToggleTurret = false;
+					j = 0;
+					this->gold -= 100;
+				}
+				else if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Num3 && this->gold >= 125) {
+					this->towers.push_back(new Vaccine(bounds));
+					openToggleTurret = false;
+					j = 0;
+					this->gold -= 125;
+				}
+
 
 			}
 
-			std::cout << towers.size() << std::endl;
+
+			if (ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Right) {
+				for (int i = 0; i < this->towersForUpgrade.size(); i++) {
+					sf::FloatRect boundsTowersForUpgrade = this->towersForUpgrade[i].getGlobalBounds();
+					if (boundsTowersForUpgrade.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) {
+						this->towersForUpgrade.erase(this->towersForUpgrade.begin() + i);
+						openTurretUpgrade = true;
+						z = 1;
+						break; // Exit the loop after finding the clicked tower
+					}
+				}
+			}
+
+			if (z == 1) {
+				if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Enter && this->gold >= 150) {
+					for (int i = 0; i < this->towers.size(); i++) {
+						sf::FloatRect boundsTower = this->towers[i]->getBounds();
+						if (boundsTower.contains(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) {
+							this->towers[i]->upgrade();  // Call upgrade() on the clicked tower
+							this->gold -= 150;
+							break; // Exit the loop after upgrading the clicked tower
+						}
+					}
+					openTurretUpgrade = false;
+					z = 0;
+				}
+			}
+		}
+
+			/*std::cout << towers.size() << std::endl;*/
 			for (int i = 0; i < towers.size(); i++)
 			{
 				if (this->towers[i]->attackSpeed > 50.f)
 				{
 					this->towers[i]->attackSpeed = 0.f;
 				}
-				else {
-					this->towers[i]->attackSpeed += 1.f;
-				}
+				//else {
+				//	this->towers[i]->attackSpeed += 1.f;
+				//}
 			}
-			//Vaccine shoot
+			auto currentTime1 = std::chrono::steady_clock::now();
+			auto elapsedTime1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime1 - lastSpawnTime);
 			for (int i = 0; i < this->towers.size(); i++) {
-				if (this->towers[i]->attackSpeed == 2.f && this->towers[i]->attackRange == 170.f) {
+				if (this->towers[i]->attackSpeed == 2.f && (this->towers[i]->attackRange == 170.f || this->towers[i]->attackRange == 260.f)) {
 					sf::Vector2f towerPosition = this->towers[i]->position;
 					float minimumDistance = std::numeric_limits<float>::max();
 					Enemy* closestEnemy = nullptr;
@@ -235,26 +527,15 @@ void Game::run()
 					double dy = closestEnemy->getPos().y - towers[i]->position.y;
 					double angle = std::atan2(dy, dx) * 180 / 3.14;
 					if (minimumDistance < this->towers[i]->attackRange) {
-						this->bullets.push_back(new VaccineBullet(this->towers[i]->position, angle));
-					}
-					for (int i = 0; i < bullets.size(); i++) {
-						for (int j = 0; j < enemies.size(); j++) {
-							sf::FloatRect bulletBounds = this->bullets[i]->sprite.getGlobalBounds();;
-							sf::FloatRect enemyBounds = this->enemies[j]->getBounds();
-							if (bulletBounds.intersects(enemyBounds)) {
-								delete this->bullets[i];
-								this->bullets.erase(this->bullets.begin() + i);
-								i--;
-								delete this->enemies[j];
-								this->enemies.erase(this->enemies.begin() + j);
-								j--;  // Decrement the index since the vector has been modified
-								break;  // Exit the inner loop since the bullet has been deleted
-							}
+						if (elapsedTime1.count() >= spawnIntervalMillis2) {
+							this->bullets.push_back(new VaccineBullet(this->towers[i]->position, angle));
+							lastSpawnTime = currentTime1;
 						}
 					}
 
+
 				}
-				if (this->towers[i]->attackSpeed == 4.f && this->towers[i]->attackRange == 250.f) {
+				if (this->towers[i]->attackSpeed == 4.f && (this->towers[i]->attackRange == 250.f || this->towers[i]->attackRange == 300.f)) {
 					sf::Vector2f towerPosition = this->towers[i]->position;
 					float minimumDistance = std::numeric_limits<float>::max();
 					Enemy* closestEnemy = nullptr;
@@ -270,25 +551,15 @@ void Game::run()
 					double dy = closestEnemy->getPos().y - towers[i]->position.y;
 					double angle = std::atan2(dy, dx) * 180 / 3.14;
 					if (minimumDistance < this->towers[i]->attackRange) {
-						this->bullets.push_back(new SyringeBullet(this->towers[i]->position, angle));
-					}
-					for (int i = 0; i < bullets.size(); i++) {
-						for (int j = 0; j < enemies.size(); j++) {
-							sf::FloatRect bulletBounds = this->bullets[i]->sprite.getGlobalBounds();;
-							sf::FloatRect enemyBounds = this->enemies[j]->getBounds();
-							if (bulletBounds.intersects(enemyBounds)) {
-								delete this->bullets[i];
-								this->bullets.erase(this->bullets.begin() + i);
-								i--;
-								delete this->enemies[j];
-								this->enemies.erase(this->enemies.begin() + j);
-								j--;  // Decrement the index since the vector has been modified
-								break;  // Exit the inner loop since the bullet has been deleted
-							}
+						if (elapsedTime1.count() >= spawnIntervalMillis4) {
+							this->bullets.push_back(new SyringeBullet(this->towers[i]->position, angle));
+							lastSpawnTime = currentTime1;
 						}
+
 					}
+
 				}
-				if (this->towers[i]->attackSpeed == 1.f && this->towers[i]->attackRange == 120.f) {
+				if (this->towers[i]->attackSpeed == 1.f && (this->towers[i]->attackRange == 120.f || this->towers[i]->attackRange == 200.f)) {
 					sf::Vector2f towerPosition = this->towers[i]->position;
 					float minimumDistance = std::numeric_limits<float>::max();
 					Enemy* closestEnemy = nullptr;
@@ -304,22 +575,34 @@ void Game::run()
 					double dy = closestEnemy->getPos().y - towers[i]->position.y;
 					double angle = std::atan2(dy, dx) * 180 / 3.14;
 					if (minimumDistance < this->towers[i]->attackRange) {
-						this->bullets.push_back(new PelletBullet(this->towers[i]->position, angle));
+						if (elapsedTime1.count() >= spawnIntervalMillis1) {
+							this->bullets.push_back(new PelletBullet(this->towers[i]->position, angle));
+							lastSpawnTime = currentTime1;
+						}
+
 					}
-					for (int i = 0; i < bullets.size(); i++) {
-						for (int j = 0; j < enemies.size(); j++) {
-							sf::FloatRect bulletBounds = this->bullets[i]->sprite.getGlobalBounds();;
-							sf::FloatRect enemyBounds = this->enemies[j]->getBounds();
-							if (bulletBounds.intersects(enemyBounds)) {
-								delete this->bullets[i];
-								this->bullets.erase(this->bullets.begin() + i);
-								i--;
-								//this->enemies[j]->
+
+
+				}
+				for (int k = 0; k < bullets.size(); k++) {
+					for (int j = 0; j < enemies.size(); j++) {
+						sf::FloatRect bulletBounds = this->bullets[k]->sprite.getGlobalBounds();
+						sf::FloatRect enemyBounds = this->enemies[j]->getBounds();
+						if (bulletBounds.intersects(enemyBounds)) {
+							delete this->bullets[k];
+							this->bullets.erase(this->bullets.begin() + k);
+							k--;
+							this->enemies[j]->loseHp(this->towers[i]->damage);
+							if (this->enemies[j]->hp == 0) {
 								delete this->enemies[j];
 								this->enemies.erase(this->enemies.begin() + j);
+								this->gold += enemies[j]->gold;
 								j--;  // Decrement the index since the vector has been modified
+
 								break;  // Exit the inner loop since the bullet has been deleted
+
 							}
+							break;  // Exit the inner loop since the bullet has hit an enemy
 						}
 					}
 				}
@@ -327,9 +610,6 @@ void Game::run()
 			//
 			//update entities
 			//
-			
-
-			this->window->clear();
 
 			std::stringstream ss;
 			ss << "Health: " << this->hp;
@@ -340,23 +620,67 @@ void Game::run()
 			ss1 << "Gold: " << this->gold;
 			this->goldText.setString(ss1.str());
 
-			if (!startGame) {
+
+			elapsedTime += clock.restart().asSeconds();
+			if (elapsedTime >= updateInterval.asSeconds())
+			{
+				if (this->hp > 0)
+					points++;
+
+				elapsedTime -= updateInterval.asSeconds();
+			}
+
+			std::stringstream ss2;
+			ss2 << "Points: " << this->points;
+			this->pointsText.setString(ss2.str());
+
+
+			this->window->clear();
+
+			if (!startGame && !leaderboardScreen) {
 				this->window->draw(this->start);
 				this->window->draw(this->startText);
 				this->window->draw(this->play);
 				this->window->draw(this->playText);
-				this->window->draw(this->leaderboard);
+				this->window->draw(this->leaderboardRectangle);
 				this->window->draw(this->leaderboardText);
 				this->window->draw(this->exit);
 				this->window->draw(this->exitText);
 			}
-			else {
-				this->window->draw(this->health);
-				this->window->draw(this->goldText);
+			else if (!startGame && leaderboardScreen) {
+
+				// Button clicked, open leaderboard
+				std::vector<PlayerScore> leaderboard = loadLeaderboard();
+
+				// Sort the leaderboard by score in descending order
+				std::sort(leaderboard.begin(), leaderboard.end(), compareScores);
+
+				std::ostringstream oss;
+				int lineCount = 0; // Counter for the number of lines written
+				for (const PlayerScore& playerScore : leaderboard) {
+					oss << playerScore.nickname << " - " << playerScore.points << "\n";
+					lineCount++;
+					if (lineCount >= 10) {
+						break; // Exit the loop after writing 10 lines
+					}
+				}
+				nicknameTextinLeanderboard.setString(oss.str());
+
+				this->window->draw(this->leaderboardScreenShow);
+				this->window->draw(this->leaderboardTitle);
+				this->window->draw(this->nicknameTextinLeanderboard);
+				this->window->draw(this->backButton);
+				this->window->draw(this->backButtonText);
+			}
+			else
+			{
 				this->updateEnemies();
 				this->map->render(*this->window);
 
 				//Draw all the stuff
+				this->window->draw(this->health);
+				this->window->draw(this->goldText);
+
 				for (auto* enemies : this->enemies)
 				{
 					enemies->render(this->window);
@@ -382,37 +706,75 @@ void Game::run()
 
 				if (openToggleTurret) {
 					this->window->draw(this->toggleTurret);
-
+				}
+				if (openTurretUpgrade) {
+					this->window->draw(this->upgrade);
+					this->window->draw(this->upgradeText);
+				}
+				if (hp <= 0) {
+					this->window->draw(this->endGame);
+					this->window->draw(this->gameOverText);
+					this->window->draw(this->pointsText);
+					this->window->draw(this->enterNicknameText);
+					this->window->draw(this->inputbox);
+					this->window->draw(this->nicknameText);
+					this->window->draw(this->hintNicknameText);
+					//this->window->draw(this->playAgain);
+					//this->window->draw(this->playAgainText);
+					this->window->draw(this->exitGameOver);
+					this->window->draw(this->exitGameOverText);
 				}
 			}
 			this->window->display();
+	
 	}
 }
 
+
 void Game::updateEnemies()
 {
-	//Spawning
+	// Spawning
 	this->spawnTimer += 0.1f;
 	if (this->spawnTimer >= this->spawnTimerMax) {
 		this->enemies.push_back(new Bacteria(-10.f, 750.f));
 		this->enemies.push_back(new Infection(-10.f, 750.f));
 		this->enemies.push_back(new Virus(-10.f, 750.f));
 		this->spawnTimer = 0.f;
+		if (isDurationPassed(std::chrono::minutes(1))) {
+			for (auto* enemy : this->enemies) {
+				enemy->upgrade();
+			}
+		}
+		if (isDurationPassed(std::chrono::minutes(2))) {
+			for (auto* enemy : this->enemies) {
+				enemy->upgrade2();
+			}
+		}
+		if (isDurationPassed(std::chrono::minutes(3))) {
+			for (auto* enemy : this->enemies) {
+				enemy->upgrade3();
+			}
+		}
 	}
 
-	//Update
-	unsigned counterBacteria = 0;
-	for (auto* enemies : this->enemies)
-	{
-		enemies->update(this->map);
+	// Update
+	unsigned counter = 0;
+	for (auto* enemy : this->enemies) {
+		enemy->update(this->map);
 
-		if (enemies->getBounds().left + 70.f > this->window->getSize().x)
-		{
-			delete this->enemies.at(counterBacteria);
-			this->enemies.erase(this->enemies.begin() + counterBacteria);
+		if (enemy->getBounds().left + 70.f > this->window->getSize().x) {
+			this->hp = hp - enemy->getDamage();
+			delete this->enemies.at(counter);
+			this->enemies.erase(this->enemies.begin() + counter);
 		}
-		++counterBacteria;
+		++counter;
 	}
 }
+
+
+
+
+
+
 
 

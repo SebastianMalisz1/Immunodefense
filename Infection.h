@@ -25,18 +25,25 @@ class Infection :
 //	int gold;
 //
 //	Mapa* map;
-
+public:
 	virtual void initVariables() override;
 	virtual void initTexture() override;
 	virtual void initSprite() override;
 
+	
 
-public:
+
+
 	Infection(float pos_x, float pos_y);
 	virtual ~Infection();
 
 	//const sf::FloatRect getBounds() const;
+	virtual void loseHp(const int value) override;
+	virtual const int& getDamage() const override;
 	virtual void update(Mapa* map) override;
+	virtual void upgrade() override;
+	virtual void upgrade2() override;
+	virtual void upgrade3() override;
 	virtual void render(sf::RenderTarget* target) override;
 };
 

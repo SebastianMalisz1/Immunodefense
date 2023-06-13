@@ -5,9 +5,9 @@
 
 void Vaccine::initVariables()
 {
-	this->cost = 5;
+	this->cost = 125;
 	this->attackSpeed = 2.f;
-	this->damage = 1;
+	this->damage = 2;
 	this->attackRange = 170.f;
 }
 
@@ -57,8 +57,9 @@ Vaccine::~Vaccine() {
 }
 
 void Vaccine::upgrade() {
-	this->attackRange += 30.f;
-	this->damage += 1;
+	this->attackRange = 260.f;
+	this->damage = 5;
+	this->attackSpeed = 2.f;
 }
 
 void Vaccine::render(sf::RenderTarget* target) {

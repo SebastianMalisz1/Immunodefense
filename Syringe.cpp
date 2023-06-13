@@ -5,9 +5,9 @@
 
 void Syringe::initVariables()
 {
-	this->cost = 10;
+	this->cost = 200;
 	this->attackSpeed = 4.f;
-	this->damage = 0.5;
+	this->damage = 1;
 	this->attackRange = 250.f;
 }
 
@@ -57,8 +57,9 @@ Syringe::~Syringe() {
 
 void Syringe::upgrade()
 {
-	this->attackRange += 50.f;
-	this->damage += 0.5;
+	this->attackRange = 300.f;
+	this->damage = 3;
+	this->attackSpeed = 4.f;
 }
 
 void Syringe::render(sf::RenderTarget* target) {

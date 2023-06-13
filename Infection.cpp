@@ -6,9 +6,9 @@ void Infection::initVariables()
 {
 	this->speedX = 0.5f;
 	this->speedY = 0.f;
-	this->hpMax = 4;
+	this->hpMax = 20;
 	this->hp = this->hpMax;
-	this->damage = 1;
+	this->damage = 2;
 	this->gold = 15;
 }
 
@@ -42,6 +42,12 @@ void Infection::initSprite()
 	//this->sprite.setColor(sf::Color::Black);
 }
 
+void Infection::loseHp(const int value) {
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
+
 
 
 Infection::Infection(float pos_x, float pos_y)
@@ -51,14 +57,12 @@ Infection::Infection(float pos_x, float pos_y)
 	this->initSprite();
 	this->sprite.setPosition(pos_x, pos_y);
 }
-
+const int& Infection::getDamage() const
+{
+	return this->damage;
+}
 
 Infection::~Infection() {}
-
-//const sf::FloatRect Infection::getBounds() const
-//{
-//	return this->sprite.getGlobalBounds();
-//}
 
 void Infection::update(Mapa* map)
 {
@@ -102,7 +106,22 @@ void Infection::update(Mapa* map)
 }
 
 
+void Infection::upgrade()
+{
+	this->hpMax = 40;
+	this->hp = this->hpMax;
+}
 
+void Infection::upgrade2()
+{
+	this->hpMax = 50;
+	this->hp = this->hpMax;
+}
+void Infection::upgrade3()
+{
+	this->hpMax = 60;
+	this->hp = this->hpMax;
+}
 void Infection::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);

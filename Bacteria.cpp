@@ -6,7 +6,7 @@ void Bacteria::initVariables()
 {
 	this->speedX = 1.0f;
 	this->speedY = 0.f;
-	this->hpMax = 4;
+	this->hpMax = 10;
 	this->hp = this->hpMax;
 	this->damage = 1;
 	this->gold = 15;
@@ -14,22 +14,12 @@ void Bacteria::initVariables()
 
 void Bacteria::initTexture()
 {
-	//srand(time(NULL));
-	//int liczbaLosowa = rand() % 3;
-	//std::cout << liczbaLosowa << std::endl;
-	//
+
 	if (/*liczbaLosowa == 0 && */!this->texture.loadFromFile("Textures/bacteria.png"))
 	{
 		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
 	}
-	/*if (liczbaLosowa == 1 && !this->texture.loadFromFile("Textures/zoltaBak.png"))
-	{
-		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
-	}
-	if (liczbaLosowa == 2 && !this->texture.loadFromFile("Textures/zielonyWir.png"))
-	{
-		std::cout << "ERROR::ENEMY::INITTEXTURE::COULD NOR LOAD TEXTURE FILE" << "\n";
-	}*/
+
 	
 }
 
@@ -99,9 +89,30 @@ void Bacteria::update(Mapa* map)
 	}
 }
 
+void Bacteria::loseHp(const int value) {
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
+
 const int& Bacteria::getDamage() const
 {
 	return this->damage;
+}
+void Bacteria::upgrade()
+{
+	this->hpMax = 20;
+	this->hp = this->hpMax;
+}
+void Bacteria::upgrade2()
+{
+	this->hpMax = 30;
+	this->hp = this->hpMax;
+}
+void Bacteria::upgrade3()
+{
+	this->hpMax = 40;
+	this->hp = this->hpMax;
 }
 
 void Bacteria::render(sf::RenderTarget* target)

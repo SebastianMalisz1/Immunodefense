@@ -5,7 +5,7 @@
 
 void Pellet::initVariables()
 {
-	this->cost = 15;
+	this->cost = 100;
 	this->attackSpeed = 1.f;
 	this->damage = 3;
 	this->attackRange = 120.f;
@@ -57,8 +57,9 @@ Pellet::~Pellet() {
 
 void Pellet::upgrade()
 {
-	this->attackRange += 20.f;
-	this->damage += 1;
+	this->attackRange = 200.f;
+	this->damage = 5;
+	this->attackSpeed = 1.f;
 }
 
 void Pellet::render(sf::RenderTarget* target) {

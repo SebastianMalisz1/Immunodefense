@@ -35,10 +35,15 @@ Tower::Tower(sf::Vector2f positionOnMap){
 Tower::~Tower() {
 
 }
-
+const sf::FloatRect Tower::getBounds() const
+{
+	return this->sprite.getGlobalBounds();
+}
 void Tower::upgrade()
 {
-
+	this->attackSpeed += 0.f;
+	this->damage += 0;
+	this->attackRange += 100.f;
 }
 
 void Tower::render(sf::RenderTarget* target){

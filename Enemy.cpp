@@ -30,6 +30,27 @@ const int& Enemy::getDamage() const
 	return this->damage;
 }
 
+void Enemy::loseHp(const int value) {
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
+
+void Enemy::upgrade()
+{
+	this->hpMax = 100;
+}
+
+void Enemy::upgrade2()
+{
+	this->hpMax = 200;
+}
+
+void Enemy::upgrade3()
+{
+	this->hpMax = 300;
+}
+
 void Enemy::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);
