@@ -60,6 +60,14 @@ void Pellet::upgrade()
 	this->attackRange = 200.f;
 	this->damage = 5;
 	this->attackSpeed = 1.f;
+
+	float radiusSize = this->attackRange;
+	this->radius.setOrigin(radiusSize / 2.f, radiusSize / 2.f);
+	this->radius.setRadius(radiusSize);
+	this->radius.setOutlineThickness(1.f);
+	this->radius.setOutlineColor(sf::Color::Black);
+	this->radius.setFillColor(sf::Color::Transparent);
+	this->radius.setPosition(sprite.getPosition().x - 60.f, sprite.getPosition().y - 40.f);
 }
 
 void Pellet::render(sf::RenderTarget* target) {

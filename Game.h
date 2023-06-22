@@ -10,6 +10,8 @@
 #include <memory>
 #include <thread>
 #include <regex>
+#include <filesystem>
+#include <unordered_set>
 #include "Map.h"
 #include "Enemy.h"
 #include "Bacteria.h"
@@ -23,6 +25,7 @@
 #include "VaccineBullet.h"
 #include "PelletBullet.h"
 #include "SyringeBullet.h"
+#include "Leaderbord.h"
 
 
 
@@ -62,8 +65,8 @@ private:
 	sf::Text backButtonText;
 
 
-	sf::RectangleShape playAgain;
-	sf::Text playAgainText;
+	sf::RectangleShape leaderboardEnd;
+	sf::Text leaderboardEndText;
 	sf::RectangleShape exitGameOver;
 	sf::Text exitGameOverText;
 
@@ -85,7 +88,7 @@ private:
 	int hp;
 	int gold;
 	int points;
-
+	Leaderboard leaderboard;
 
 	std::chrono::steady_clock::time_point startTime;
 	
@@ -93,6 +96,7 @@ private:
 	float spawnTimer;
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
+
 
 	void initStartWindow();
 	void initLeaderboardWindow();
@@ -104,13 +108,14 @@ private:
 	void initBacteria();
 
 public:
+
 	Game();
 	virtual ~Game();
 
 	void startTimer();
 	bool isDurationPassed(std::chrono::steady_clock::duration duration);
 
-
+	void displayLeaderboard();
 	void run();
 	void updateEnemies();
 	void updateVaccine();

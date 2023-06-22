@@ -60,6 +60,14 @@ void Syringe::upgrade()
 	this->attackRange = 300.f;
 	this->damage = 3;
 	this->attackSpeed = 4.f;
+
+	float radiusSize = this->attackRange;
+	this->radius.setOrigin(radiusSize / 2.f, radiusSize / 2.f);
+	this->radius.setRadius(radiusSize);
+	this->radius.setOutlineThickness(1.f);
+	this->radius.setOutlineColor(sf::Color::Black);
+	this->radius.setFillColor(sf::Color::Transparent);
+	this->radius.setPosition(sprite.getPosition().x - 100.f, sprite.getPosition().y - 100.f);
 }
 
 void Syringe::render(sf::RenderTarget* target) {

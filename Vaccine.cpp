@@ -60,6 +60,14 @@ void Vaccine::upgrade() {
 	this->attackRange = 260.f;
 	this->damage = 5;
 	this->attackSpeed = 2.f;
+
+	float radiusSize = this->attackRange;
+	this->radius.setOrigin(radiusSize / 2.f, radiusSize / 2.f);
+	this->radius.setRadius(radiusSize);
+	this->radius.setOutlineThickness(1.f);
+	this->radius.setOutlineColor(sf::Color::Black);
+	this->radius.setFillColor(sf::Color::Transparent);
+	this->radius.setPosition(sprite.getPosition().x - 90.f, sprite.getPosition().y - 90.f);
 }
 
 void Vaccine::render(sf::RenderTarget* target) {
