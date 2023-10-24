@@ -12,11 +12,11 @@ bool compareScores(const PlayerScore& a, const PlayerScore& b) {
 void saveLeaderboard(const std::vector<PlayerScore>& leaderboard) {
 	std::ofstream file("leaderboard.txt");
 	if (file.is_open()) {
-		std::unordered_set<std::string> uniqueNicknames;  // Track unique nicknames
+		std::unordered_set<std::string> uniqueNicknames;
 
-		// Use ranges to write leaderboard data to the file
+		
 		std::ranges::for_each(leaderboard, [&](const PlayerScore& playerScore) {
-			// Check if the nickname is unique before saving
+		
 			if (uniqueNicknames.insert(playerScore.nickname).second) {
 				file << playerScore.nickname << " " << playerScore.points << "\n";
 			}
@@ -45,7 +45,7 @@ std::vector<PlayerScore> loadLeaderboard() {
 				}
 			}
 			file.close();
-			//std::cout << "Leaderboard loaded successfully.\n";
+			
 		}
 		else {
 			std::cerr << "Failed to load leaderboard.\n";
@@ -59,19 +59,19 @@ std::vector<PlayerScore> loadLeaderboard() {
 }
 
 void Game::displayLeaderboard() {
-	// Button clicked, open leaderboard
+
 	std::vector<PlayerScore> leaderboard = loadLeaderboard();
 
-	// Sort the leaderboard by score in descending order
+
 	std::ranges::sort(leaderboard, compareScores);
 
 	std::ostringstream oss;
-	int lineCount = 0; // Counter for the number of lines written
+	int lineCount = 0; 
 	for (const PlayerScore& playerScore : leaderboard) {
 		oss << playerScore.nickname << " - " << playerScore.points << "\n";
 		lineCount++;
 		if (lineCount >= 10) {
-			break; // Exit the loop after writing 10 lines
+			break; 
 		}
 	}
 	nicknameTextinLeanderboard.setString(oss.str());
@@ -327,13 +327,13 @@ Game::~Game()
 
 bool j = 0;
 bool z = 0;
-const int spawnIntervalMillis1 = 500;  // Time between arrow spawns in milliseconds
-const int spawnIntervalMillis2 = 500;  // Time between arrow spawns in milliseconds
-const int spawnIntervalMillis4 = 500;  // Time between arrow spawns in milliseconds
+const int spawnIntervalMillis1 = 500; 
+const int spawnIntervalMillis2 = 500;  
+const int spawnIntervalMillis4 = 500; 
 auto lastSpawnTime = std::chrono::steady_clock::now();
 void Game::run()
 {
-	//po klikniciu myszka utw�rz w miejscu klikneicia sprite w kt�rym b�dzie opcja wyboru wierzy (grafika gdzie sa namalowanie wierze i odpowiadajace im przyciski)
+	
 	bool openToggleTurret = false;
 	bool openTurretUpgrade = false;
 	bool startGame = false;
@@ -348,10 +348,10 @@ void Game::run()
 	float elapsedTime = 0.f;
 	sf::Time updateInterval = sf::seconds(1.f);
 
-	// Copy placeForTower elements to avaliableSpotsForTowers
+	
 	std::ranges::copy(map->placeForTower, std::back_inserter(avaliableSpotsForTowers));
 
-	// Copy placeForTower elements to towersForUpgrade
+	
 	std::ranges::copy(map->placeForTower, std::back_inserter(towersForUpgrade));
 
 	sf::Vector2f bounds;
@@ -432,11 +432,11 @@ void Game::run()
 				if (ev.type == sf::Event::TextEntered) {
 					if (ev.text.unicode < 128) {
 						if (ev.text.unicode == '\b' && !nickname.empty()) {
-							// Handle backspace key
+							
 							nickname.pop_back();
 						}
 						else if (ev.text.unicode != '\r' && ev.text.unicode != '\n') {
-							// Append entered character to inputString (excluding Enter key)
+						
 							char c = static_cast<char>(ev.text.unicode);
 							if (std::regex_match(std::string(1, c), std::regex("[a-z]"))) {
 								nickname += c;
@@ -484,7 +484,7 @@ void Game::run()
 			
 			if (ev.Event::MouseButtonPressed && ev.Event::key.code == sf::Mouse::Left) {
 
-				//finding avaliable spots for and palcing the tower there
+				
 				for (int i = 0; i < this->avaliableSpotsForTowers.size(); i++)
 				{
 					sf::FloatRect boundsPlaceForTowers = this->avaliableSpotsForTowers[i].getGlobalBounds();
@@ -528,7 +528,7 @@ void Game::run()
 						this->towersForUpgrade.erase(this->towersForUpgrade.begin() + i);
 						openTurretUpgrade = true;
 						z = 1;
-						break; // Exit the loop after finding the clicked tower
+						break;
 					}
 				}
 			}
@@ -546,24 +546,6 @@ void Game::run()
 					openTurretUpgrade = false;
 					z = 0;
 				}
-				//if (ev.Event::KeyReleased && ev.Event::key.code == sf::Keyboard::Enter && gold >= 150) {
-				//	auto mousePosition = sf::Mouse::getPosition();
-
-				//	// Find the tower clicked by checking if its bounds contain the mouse position
-				//	auto it = std::find_if(towers.begin(), towers.end(), [&](Tower* tower) {
-				//		sf::FloatRect boundsTower = tower->getBounds();
-				//		return boundsTower.contains(mousePosition.x, mousePosition.y);
-				//		});
-
-				//	if (it != towers.end()) {
-				//		// Upgrade the clicked tower
-				//		(*it)->upgrade();
-				//		gold -= 150;
-				//	}
-
-				//	openTurretUpgrade = false;
-				//	z = 0;
-				//}
 			}
 		}
 
@@ -574,9 +556,6 @@ void Game::run()
 				{
 					this->towers[i]->attackSpeed = 0.f;
 				}
-				//else {
-				//	this->towers[i]->attackSpeed += 1.f;
-				//}
 			}
 			auto currentTime1 = std::chrono::steady_clock::now();
 			auto elapsedTime1 = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime1 - lastSpawnTime);
@@ -667,19 +646,17 @@ void Game::run()
 								delete this->enemies[j];
 								this->enemies.erase(this->enemies.begin() + j);
 								this->gold += enemies[j]->gold;
-								j--;  // Decrement the index since the vector has been modified
+								j--; 
 
-								break;  // Exit the inner loop since the bullet has been deleted
+								break;
 
 							}
-							break;  // Exit the inner loop since the bullet has hit an enemy
+							break; 
 						}
 					}
 				}
 			}
-			//
-			//update entities
-			//
+			
 
 			std::stringstream ss;
 			ss << "Health: " << this->hp;
